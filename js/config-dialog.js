@@ -264,6 +264,16 @@ class ConfigDialog {
       header.textContent = vf.label || vf.field;
       row.appendChild(header);
 
+      // Optionaler Anzeigename der Spalte
+      const nameInput = document.createElement('input');
+      nameInput.className = 'form-input';
+      nameInput.id = `val-fmt-label-${fieldKey}`;
+      nameInput.type = 'text';
+      nameInput.placeholder = 'Spaltenname (optional)';
+      nameInput.value = format.label || '';
+      nameInput.style.cssText = 'width: 100%; box-sizing: border-box;';
+      row.appendChild(nameInput);
+
       // Controls row
       const controls = document.createElement('div');
       controls.style.cssText = 'display: flex; gap: 12px; align-items: center; justify-content: space-between;';
@@ -364,10 +374,13 @@ class ConfigDialog {
       (existing.valueFields || this._config.valueFields || []).forEach(vf => {
         const typeEl = document.getElementById(`val-fmt-type-${vf.field}`);
         const decEl = document.getElementById(`val-fmt-dec-${vf.field}`);
+        const labelEl = document.getElementById(`val-fmt-label-${vf.field}`);
+        
         if (typeEl && decEl) {
           valueFormats[vf.field] = {
             type: typeEl.value,
-            decimals: parseInt(decEl.value, 10) || 0
+            decimals: parseInt(decEl.value, 10) || 0,
+            label: labelEl ? labelEl.value.trim() : ''
           };
         }
       });
