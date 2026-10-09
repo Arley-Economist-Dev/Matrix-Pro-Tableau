@@ -242,7 +242,10 @@ class MatrixApp {
       this.engine = new PivotEngine({
         rowFields: this.config.rowFields || [],
         colFields: this.config.colFields || [],
-        valueFields: this.config.valueFields || [],
+        valueFields: (this.config.valueFields || []).map(v => ({
+          ...v,
+          label: this.config.valueFormats?.[v.field]?.label || v.label || v.field
+        })),
         showRowTotal: this.config.showRowTotal !== false
       });
 
